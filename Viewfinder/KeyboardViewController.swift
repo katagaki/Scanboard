@@ -6,6 +6,7 @@
 
 import UIKit
 import AVFoundation
+import AudioToolbox
 
 public class KeyboardViewController: UIInputViewController {
 
@@ -78,7 +79,11 @@ public class KeyboardViewController: UIInputViewController {
 
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
-            setupCaptureSession()
+            if captureSession != nil {
+                startSession()
+            } else {
+                setupCaptureSession()
+            }
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
                 DispatchQueue.main.async {
