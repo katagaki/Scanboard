@@ -9,11 +9,11 @@ public class KeyboardViewController: UIInputViewController {
     // MARK: - Properties
 
     private var captureSession: AVCaptureSession?
-    private var previewLayer: AVCaptureVideoPreviewLayer?
     private var scannerView: BarcodeScannerView!
     private var isSessionRunning = false
     private var needsCameraStart = false
     private let sessionQueue = DispatchQueue(label: "com.tsubuzaki.Scanboard.sessionQueue")
+    private let ciContext = CIContext()
 
     // MARK: - Lifecycle
 
@@ -50,14 +50,6 @@ public class KeyboardViewController: UIInputViewController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        // Keep the preview layer in sync with the container size.
-        if let layer = previewLayer {
-            layer.frame = scannerView.previewContainer.bounds
-        }
     }
 
     // MARK: - UI Setup
@@ -125,16 +117,30 @@ public class KeyboardViewController: UIInputViewController {
             return
         }
 
-        let output = AVCaptureMetadataOutput()
-        guard session.canAddOutput(output) else { return }
-        session.addOutput(output)
-        output.setMetadataObjectsDelegate(self, queue: .main)
+        // Metadata output for barcode detection.
+        let metadataOutput = AVCaptureMetadataOutput()
+        guard session.canAddOutput(metadataOutput) else { return }
+        session.addOutput(metadataOutput)
+        metadataOutput.setMetadataObjectsDelegate(self, queue: .main)
 
-        output.metadataObjectTypes = [
+        metadataOutput.metadataObjectTypes = [
             .code128, .code39, .code93, .itf14,
             .ean13, .ean8, .upce,
             .pdf417, .qr, .dataMatrix
         ]
+
+        // Video data output for the viewfinder.
+        // AVCaptureVideoPreviewLayer does not render inside keyboard
+        // extensions, so we grab frames manually and display them in a
+        // UIImageView instead.
+        let videoOutput = AVCaptureVideoDataOutput()
+        videoOutput.videoSettings = [
+            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
+        ]
+        videoOutput.alwaysDiscardsLateVideoFrames = true
+        guard session.canAddOutput(videoOutput) else { return }
+        session.addOutput(videoOutput)
+        videoOutput.setSampleBufferDelegate(self, queue: sessionQueue)
 
         captureSession = session
 
@@ -149,17 +155,6 @@ public class KeyboardViewController: UIInputViewController {
         NotificationCenter.default.addObserver(
             self, selector: #selector(sessionRuntimeError),
             name: .AVCaptureSessionRuntimeError, object: session)
-
-        // Create the preview layer and add it to the container.
-        let preview = AVCaptureVideoPreviewLayer(session: session)
-        preview.videoGravity = .resizeAspectFill
-        scannerView.previewContainer.layer.insertSublayer(preview, at: 0)
-        previewLayer = preview
-
-        // Force a layout pass so the preview container has its final bounds,
-        // then size the preview layer to match.
-        view.layoutIfNeeded()
-        preview.frame = scannerView.previewContainer.bounds
 
         startSession()
     }
@@ -231,5 +226,21 @@ extension KeyboardViewController: AVCaptureMetadataOutputObjectsDelegate {
         stopSession()
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
         scannerView.showResult(value, type: obj.type)
+    }
+}
+
+// MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
+
+extension KeyboardViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
+    public func captureOutput(_ output: AVCaptureOutput,
+                              didOutput sampleBuffer: CMSampleBuffer,
+                              from connection: AVCaptureConnection) {
+        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+        guard let cgImage = ciContext.createCGImage(ciImage, from: ciImage.extent) else { return }
+        let image = UIImage(cgImage: cgImage, scale: 1.0, orientation: .right)
+        DispatchQueue.main.async { [weak self] in
+            self?.scannerView.updatePreview(image)
+        }
     }
 }

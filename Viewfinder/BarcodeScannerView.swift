@@ -12,10 +12,11 @@ class BarcodeScannerView: UIView {
 
     // MARK: - Subviews
 
-    let previewContainer: UIView = {
-        let v = UIView()
+    let previewContainer: UIImageView = {
+        let v = UIImageView()
         v.backgroundColor = .black
         v.clipsToBounds = true
+        v.contentMode = .scaleAspectFill
         return v
     }()
 
@@ -151,6 +152,12 @@ class BarcodeScannerView: UIView {
         statusLabel.text = "⚠️ \(message)"
         statusLabel.isHidden = false
         reticleView.isHidden = true
+    }
+
+    // MARK: - Preview
+
+    func updatePreview(_ image: UIImage) {
+        previewContainer.image = image
     }
 
     // MARK: - Actions
