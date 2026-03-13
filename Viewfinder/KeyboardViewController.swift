@@ -13,6 +13,7 @@ public class KeyboardViewController: UIInputViewController {
     private var scannerView: BarcodeScannerView!
     private var isSessionRunning = false
     private var needsCameraStart = false
+    private let sessionQueue = DispatchQueue(label: "com.tsubuzaki.Scanboard.sessionQueue")
 
     // MARK: - Lifecycle
 
@@ -45,6 +46,10 @@ public class KeyboardViewController: UIInputViewController {
     public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         stopSession()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     public override func viewDidLayoutSubviews() {
@@ -94,12 +99,9 @@ public class KeyboardViewController: UIInputViewController {
                 setupCaptureSession()
             }
         case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
-                DispatchQueue.main.async {
-                    if granted { self?.setupCaptureSession() }
-                    else { self?.scannerView.showPermissionDenied() }
-                }
-            }
+            // Keyboard extensions cannot present the system permission dialog.
+            // Direct the user to open the main app where the prompt can appear.
+            scannerView.showError("Open the Scanboard app to grant camera access.")
         default:
             scannerView.showPermissionDenied()
         }
@@ -136,6 +138,18 @@ public class KeyboardViewController: UIInputViewController {
 
         captureSession = session
 
+        // Observe session lifecycle notifications so we can recover from
+        // system interruptions (common in keyboard extensions).
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(sessionWasInterrupted),
+            name: .AVCaptureSessionWasInterrupted, object: session)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(sessionInterruptionEnded),
+            name: .AVCaptureSessionInterruptionEnded, object: session)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(sessionRuntimeError),
+            name: .AVCaptureSessionRuntimeError, object: session)
+
         // Create the preview layer and add it to the container.
         let preview = AVCaptureVideoPreviewLayer(session: session)
         preview.videoGravity = .resizeAspectFill
@@ -152,19 +166,47 @@ public class KeyboardViewController: UIInputViewController {
 
     private func startSession() {
         guard let session = captureSession, !isSessionRunning else { return }
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+        isSessionRunning = true
+        sessionQueue.async { [weak self] in
             session.startRunning()
             DispatchQueue.main.async {
-                self?.isSessionRunning = true
-                self?.scannerView.showScanning()
+                guard let self = self else { return }
+                if session.isRunning {
+                    self.scannerView.showScanning()
+                } else {
+                    self.isSessionRunning = false
+                }
             }
         }
     }
 
     private func stopSession() {
         guard let session = captureSession, isSessionRunning else { return }
-        session.stopRunning()
         isSessionRunning = false
+        sessionQueue.async {
+            session.stopRunning()
+        }
+    }
+
+    // MARK: - Session Notifications
+
+    @objc private func sessionWasInterrupted(_ notification: Notification) {
+        isSessionRunning = false
+    }
+
+    @objc private func sessionInterruptionEnded(_ notification: Notification) {
+        startSession()
+    }
+
+    @objc private func sessionRuntimeError(_ notification: Notification) {
+        guard let error = notification.userInfo?[AVCaptureSessionErrorKey] as? AVError else { return }
+        isSessionRunning = false
+        // Attempt to restart for media-services-reset errors; show message otherwise.
+        if error.code == .mediaServicesWereReset {
+            startSession()
+        } else {
+            scannerView.showError("Camera error: \(error.localizedDescription)")
+        }
     }
 
     private func resumeScanning() {
