@@ -1,24 +1,11 @@
-//
-//  ContentView.swift
-//  Scanboard
-//
-//  Created by シン・ジャスティン on 2026/03/13.
-//
+// ContentView.swift
+// Root view — shows setup checklist until keyboard is fully enabled,
+// then reveals the test field.
 
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        SetupFlowView()
     }
-}
-
-#Preview {
-    ContentView()
 }

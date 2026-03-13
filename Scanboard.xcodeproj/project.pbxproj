@@ -6,9 +6,48 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E4B6CD5B2F644CF2005C5E55 /* Viewfinder.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E4B6CD542F644CF2005C5E55 /* Viewfinder.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E4B6CD592F644CF2005C5E55 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4B6CD342F644B87005C5E55 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E4B6CD532F644CF2005C5E55;
+			remoteInfo = Viewfinder;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E4B6CD5C2F644CF2005C5E55 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				E4B6CD5B2F644CF2005C5E55 /* Viewfinder.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		E4B6CD3C2F644B87005C5E55 /* Scanboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scanboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4B6CD542F644CF2005C5E55 /* Viewfinder.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Viewfinder.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E4B6CD5F2F644CF2005C5E55 /* Exceptions for "Viewfinder" folder in "Viewfinder" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = E4B6CD532F644CF2005C5E55 /* Viewfinder */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E4B6CD3E2F644B87005C5E55 /* Scanboard */ = {
@@ -16,10 +55,25 @@
 			path = Scanboard;
 			sourceTree = "<group>";
 		};
+		E4B6CD552F644CF2005C5E55 /* Viewfinder */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E4B6CD5F2F644CF2005C5E55 /* Exceptions for "Viewfinder" folder in "Viewfinder" target */,
+			);
+			path = Viewfinder;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		E4B6CD392F644B87005C5E55 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4B6CD512F644CF2005C5E55 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				E4B6CD3E2F644B87005C5E55 /* Scanboard */,
+				E4B6CD552F644CF2005C5E55 /* Viewfinder */,
 				E4B6CD3D2F644B87005C5E55 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				E4B6CD3C2F644B87005C5E55 /* Scanboard.app */,
+				E4B6CD542F644CF2005C5E55 /* Viewfinder.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -55,10 +111,12 @@
 				E4B6CD382F644B87005C5E55 /* Sources */,
 				E4B6CD392F644B87005C5E55 /* Frameworks */,
 				E4B6CD3A2F644B87005C5E55 /* Resources */,
+				E4B6CD5C2F644CF2005C5E55 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E4B6CD5A2F644CF2005C5E55 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E4B6CD3E2F644B87005C5E55 /* Scanboard */,
@@ -69,6 +127,28 @@
 			productName = Scanboard;
 			productReference = E4B6CD3C2F644B87005C5E55 /* Scanboard.app */;
 			productType = "com.apple.product-type.application";
+		};
+		E4B6CD532F644CF2005C5E55 /* Viewfinder */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E4B6CD602F644CF2005C5E55 /* Build configuration list for PBXNativeTarget "Viewfinder" */;
+			buildPhases = (
+				E4B6CD502F644CF2005C5E55 /* Sources */,
+				E4B6CD512F644CF2005C5E55 /* Frameworks */,
+				E4B6CD522F644CF2005C5E55 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E4B6CD552F644CF2005C5E55 /* Viewfinder */,
+			);
+			name = Viewfinder;
+			packageProductDependencies = (
+			);
+			productName = Viewfinder;
+			productReference = E4B6CD542F644CF2005C5E55 /* Viewfinder.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -82,6 +162,10 @@
 				TargetAttributes = {
 					E4B6CD3B2F644B87005C5E55 = {
 						CreatedOnToolsVersion = 26.3;
+					};
+					E4B6CD532F644CF2005C5E55 = {
+						CreatedOnToolsVersion = 26.3;
+						LastSwiftMigration = 2630;
 					};
 				};
 			};
@@ -100,12 +184,20 @@
 			projectRoot = "";
 			targets = (
 				E4B6CD3B2F644B87005C5E55 /* Scanboard */,
+				E4B6CD532F644CF2005C5E55 /* Viewfinder */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		E4B6CD3A2F644B87005C5E55 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4B6CD522F644CF2005C5E55 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +214,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E4B6CD502F644CF2005C5E55 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E4B6CD5A2F644CF2005C5E55 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E4B6CD532F644CF2005C5E55 /* Viewfinder */;
+			targetProxy = E4B6CD592F644CF2005C5E55 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		E4B6CD452F644B88005C5E55 /* Debug */ = {
@@ -256,6 +363,7 @@
 				DEVELOPMENT_TEAM = YYM4Z6MU8F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scans codes and inputs them using the keyboard.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -288,6 +396,7 @@
 				DEVELOPMENT_TEAM = YYM4Z6MU8F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scans codes and inputs them using the keyboard.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -303,6 +412,67 @@
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E4B6CD5D2F644CF2005C5E55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YYM4Z6MU8F;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Viewfinder/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Viewfinder;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scans codes and inputs them using the keyboard.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.Scanboard.Viewfinder;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E4B6CD5E2F644CF2005C5E55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YYM4Z6MU8F;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Viewfinder/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Viewfinder;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scans codes and inputs them using the keyboard.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.Scanboard.Viewfinder;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
@@ -327,6 +497,15 @@
 			buildConfigurations = (
 				E4B6CD482F644B88005C5E55 /* Debug */,
 				E4B6CD492F644B88005C5E55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E4B6CD602F644CF2005C5E55 /* Build configuration list for PBXNativeTarget "Viewfinder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E4B6CD5D2F644CF2005C5E55 /* Debug */,
+				E4B6CD5E2F644CF2005C5E55 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
