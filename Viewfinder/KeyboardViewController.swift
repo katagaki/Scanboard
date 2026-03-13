@@ -1,8 +1,4 @@
 // KeyboardViewController.swift  (Keyboard Extension target)
-// ─────────────────────────────────────────────────────────────
-// Drop this file into your Keyboard Extension target.
-// It writes a "hasFullAccess" flag to the shared App Group so the
-// containing app's SetupViewModel can confirm Full Access is on.
 
 import UIKit
 import AVFoundation
@@ -16,14 +12,13 @@ public class KeyboardViewController: UIInputViewController {
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var scannerView: BarcodeScannerView!
     private var isSessionRunning = false
+    private var needsCameraStart = false
 
     // MARK: - Lifecycle
 
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Write Full Access status to shared App Group so the containing app
-        // can detect it. Change the suite name to match your App Group identifier.
         if let shared = UserDefaults(suiteName: "group.com.tsubuzaki.Scanboard") {
             shared.set(hasFullAccess, forKey: "hasFullAccess")
         }
@@ -33,7 +28,18 @@ public class KeyboardViewController: UIInputViewController {
 
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        checkCameraPermissionAndStart()
+        // Defer camera start until layout has happened so the preview layer
+        // gets a non-zero frame.
+        needsCameraStart = true
+    }
+
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // By viewDidAppear, the view hierarchy has been laid out at least once.
+        if needsCameraStart {
+            needsCameraStart = false
+            checkCameraPermissionAndStart()
+        }
     }
 
     public override func viewDidDisappear(_ animated: Bool) {
@@ -43,7 +49,10 @@ public class KeyboardViewController: UIInputViewController {
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        previewLayer?.frame = scannerView.previewContainer.bounds
+        // Keep the preview layer in sync with the container size.
+        if let layer = previewLayer {
+            layer.frame = scannerView.previewContainer.bounds
+        }
     }
 
     // MARK: - UI Setup
@@ -119,23 +128,24 @@ public class KeyboardViewController: UIInputViewController {
         session.addOutput(output)
         output.setMetadataObjectsDelegate(self, queue: .main)
 
-        // Warehouse-focused barcode formats
         output.metadataObjectTypes = [
             .code128, .code39, .code93, .itf14,
             .ean13, .ean8, .upce,
             .pdf417, .qr, .dataMatrix
         ]
 
-        // Narrow rect of interest matches the horizontal reticle
-        output.rectOfInterest = CGRect(x: 0.25, y: 0.1, width: 0.5, height: 0.8)
-
         captureSession = session
 
+        // Create the preview layer and add it to the container.
         let preview = AVCaptureVideoPreviewLayer(session: session)
         preview.videoGravity = .resizeAspectFill
-        preview.frame = scannerView.previewContainer.bounds
         scannerView.previewContainer.layer.insertSublayer(preview, at: 0)
         previewLayer = preview
+
+        // Force a layout pass so the preview container has its final bounds,
+        // then size the preview layer to match.
+        view.layoutIfNeeded()
+        preview.frame = scannerView.previewContainer.bounds
 
         startSession()
     }
