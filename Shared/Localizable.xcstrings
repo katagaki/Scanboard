@@ -1,0 +1,217 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "01" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "01"
+          }
+        }
+      }
+    },
+    "A Live Activity will appear on your Lock Screen and Dynamic Island" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A Live Activity will appear on your Lock Screen and Dynamic Island"
+          }
+        }
+      }
+    },
+    "Allow Camera Access" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow Camera Access"
+          }
+        }
+      }
+    },
+    "Camera access granted." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera access granted."
+          }
+        }
+      }
+    },
+    "Copied to Clipboard" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copied to Clipboard"
+          }
+        }
+      }
+    },
+    "DONE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DONE"
+          }
+        }
+      }
+    },
+    "Grant Camera Access" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grant Camera Access"
+          }
+        }
+      }
+    },
+    "HOW IT WORKS" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HOW IT WORKS"
+          }
+        }
+      }
+    },
+    "Open Scanner" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Scanner"
+          }
+        }
+      }
+    },
+    "PENDING" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PENDING"
+          }
+        }
+      }
+    },
+    "Point your camera at a barcode — it will be scanned and copied automatically" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Point your camera at a barcode — it will be scanned and copied automatically"
+          }
+        }
+      }
+    },
+    "Quickly scan barcodes and copy them to your clipboard. Use the Live Activity to launch the scanner from anywhere." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quickly scan barcodes and copy them to your clipboard. Use the Live Activity to launch the scanner from anywhere."
+          }
+        }
+      }
+    },
+    "READY TO SCAN" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "READY TO SCAN"
+          }
+        }
+      }
+    },
+    "Scan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan"
+          }
+        }
+      }
+    },
+    "Scan Again" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan Again"
+          }
+        }
+      }
+    },
+    "SETUP" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SETUP"
+          }
+        }
+      }
+    },
+    "Switch back to your previous app and paste" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switch back to your previous app and paste"
+          }
+        }
+      }
+    },
+    "Tap here to scan a barcode" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap here to scan a barcode"
+          }
+        }
+      }
+    },
+    "Tap it anytime to open the scanner" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap it anytime to open the scanner"
+          }
+        }
+      }
+    },
+    "Tap to Scan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to Scan"
+          }
+        }
+      }
+    },
+    "Tap to Scan needs your camera to scan barcodes. Tap below to grant access." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to Scan needs your camera to scan barcodes. Tap below to grant access."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.1"
+}
