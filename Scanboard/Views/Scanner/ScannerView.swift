@@ -22,8 +22,9 @@ struct ScannerView: View {
             // Scan reticle
             if isScanning {
                 RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(.green, lineWidth: 3)
-                    .shadow(color: .green, radius: 2.0)
+                    .strokeBorder(.glow, lineWidth: 3)
+                    .shadow(color: .accent, radius: 2.0)
+                    .shadow(color: .accent, radius: 5.0)
                     .frame(width: 260, height: 160)
                     .transition(.opacity)
             }
@@ -38,7 +39,7 @@ struct ScannerView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
 
-                    Label("Copied to Clipboard", systemImage: "checkmark.circle.fill")
+                    Label("Scanner.CopiedToClipboard", systemImage: "checkmark.circle.fill")
                         .labelIconToTitleSpacing(4)
                         .font(.subheadline)
                         .foregroundStyle(.green)

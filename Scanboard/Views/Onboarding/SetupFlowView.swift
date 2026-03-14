@@ -6,6 +6,7 @@ import AVFoundation
 
 struct SetupFlowView: View {
     @State private var cameraAuthorized = AVCaptureDevice.authorizationStatus(for: .video) == .authorized
+    @State private var cameraDenied = AVCaptureDevice.authorizationStatus(for: .video) == .denied
     @Environment(\.scenePhase) private var scenePhase
     var onReady: () -> Void
 
@@ -30,7 +31,9 @@ struct SetupFlowView: View {
                     } else {
                         StepsView(
                             cameraAuthorized: cameraAuthorized,
-                            requestCamera: requestCamera
+                            cameraDenied: cameraDenied,
+                            requestCamera: requestCamera,
+                            openSettings: openSettings
                         )
                         .transition(.opacity)
                     }
@@ -52,13 +55,21 @@ struct SetupFlowView: View {
     }
 
     private func refresh() {
-        cameraAuthorized = AVCaptureDevice.authorizationStatus(for: .video) == .authorized
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        cameraAuthorized = status == .authorized
+        cameraDenied = status == .denied
     }
 
     private func requestCamera() {
         AVCaptureDevice.requestAccess(for: .video) { granted in
             cameraAuthorized = granted
+            cameraDenied = !granted
         }
+    }
+
+    private func openSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
     }
 }
 
@@ -71,13 +82,13 @@ private struct HeaderView: View {
                 Image(systemName: "barcode.viewfinder")
                     .font(.system(size: 36, weight: .bold))
                     .foregroundColor(.accentColor)
-                Text("Tap to Scan")
+                Text("App.Name")
                     .font(.system(size: 28, weight: .bold))
                     .foregroundColor(.primary)
                     .lineSpacing(2)
             }
 
-            Text("Quickly scan barcodes and copy them to your clipboard. Use the Live Activity to launch the scanner from anywhere.")
+            Text("Onboarding.Subtitle")
                 .font(.system(size: 14))
                 .foregroundColor(.secondary)
                 .lineSpacing(4)
@@ -96,19 +107,20 @@ private struct HeaderView: View {
 
 private struct StepsView: View {
     let cameraAuthorized: Bool
+    let cameraDenied: Bool
     let requestCamera: () -> Void
+    let openSettings: () -> Void
 
     var body: some View {
         VStack(spacing: 16) {
-            SectionLabel(text: "SETUP")
+            SectionLabel(text: "Onboarding.Setup")
 
             StepCard(
-                number: "01",
-                title: "Allow Camera Access",
-                description: "Tap to Scan needs your camera to scan barcodes. Tap below to grant access.",
+                title: "Onboarding.AllowCameraAccess",
+                description: "Onboarding.CameraAccessDescription",
                 isComplete: cameraAuthorized,
-                action: cameraAuthorized ? nil : requestCamera,
-                actionLabel: "Grant Camera Access"
+                action: cameraAuthorized ? nil : (cameraDenied ? openSettings : requestCamera),
+                actionLabel: cameraDenied ? "Onboarding.OpenSettings" : "Onboarding.GrantCameraAccess"
             )
         }
     }
@@ -117,7 +129,6 @@ private struct StepsView: View {
 // MARK: - Step Card
 
 private struct StepCard: View {
-    let number: LocalizedStringKey
     let title: LocalizedStringKey
     let description: LocalizedStringKey
     let isComplete: Bool
@@ -127,16 +138,6 @@ private struct StepCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Text(number)
-                    .font(.system(size: 11))
-                    .foregroundColor(isComplete ? Color.accentColor : Color(.tertiaryLabel))
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 4)
-                            .stroke(isComplete ? Color.accentColor : Color(.separator), lineWidth: 1)
-                    }
-
                 Text(title)
                     .font(.system(size: 15, weight: .bold))
                     .foregroundColor(.primary)
@@ -189,7 +190,7 @@ private struct StatusBadge: View {
         HStack(spacing: 5) {
             Image(systemName: isComplete ? "checkmark" : "circle")
                 .font(.system(size: 10, weight: .bold))
-            Text(isComplete ? "DONE" : "PENDING")
+            Text(isComplete ? "Onboarding.Done" : "Onboarding.Pending")
                 .font(.system(size: 10, weight: .bold))
         }
         .foregroundColor(isComplete ? Color.accentColor : Color(.tertiaryLabel))
@@ -210,27 +211,27 @@ private struct ReadyView: View {
                 Image(systemName: "checkmark.seal.fill")
                     .font(.system(size: 48))
                     .foregroundColor(.accentColor)
-                Text("READY TO SCAN")
+                Text("Onboarding.ReadyToScan")
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.primary)
-                Text("Camera access granted.")
+                Text("Onboarding.CameraAccessGranted")
                     .font(.system(size: 13))
                     .foregroundColor(.secondary)
             }
 
             Divider()
 
-            SectionLabel(text: "HOW IT WORKS")
+            SectionLabel(text: "Onboarding.HowItWorks")
 
             VStack(alignment: .leading, spacing: 10) {
                 InstructionRow(icon: "dot.radiowaves.left.and.right",
-                               text: "A Live Activity will appear on your Lock Screen and Dynamic Island")
+                               text: "Onboarding.Instruction.LiveActivity")
                 InstructionRow(icon: "hand.tap",
-                               text: "Tap it anytime to open the scanner")
+                               text: "Onboarding.Instruction.TapToOpen")
                 InstructionRow(icon: "barcode.viewfinder",
-                               text: "Point your camera at a barcode \u{2014} it will be scanned and copied automatically")
+                               text: "Onboarding.Instruction.PointCamera")
                 InstructionRow(icon: "arrow.uturn.backward",
-                               text: "Switch back to your previous app and paste")
+                               text: "Onboarding.Instruction.SwitchBack")
             }
             .padding(14)
             .background(Color(.secondarySystemGroupedBackground), in: .rect(cornerRadius: 10))
@@ -240,7 +241,7 @@ private struct ReadyView: View {
             }
 
             Button(action: onReady) {
-                Text("Open Scanner")
+                Text("Onboarding.OpenScanner")
                     .font(.system(size: 15, weight: .bold))
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)

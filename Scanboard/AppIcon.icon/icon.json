@@ -1,9 +1,101 @@
 {
   "fill" : {
-    "automatic-gradient" : "srgb:1.00000,0.59243,0.15740,1.00000"
+    "linear-gradient" : [
+      "srgb:0.31611,0.37850,0.48057,1.00000",
+      "srgb:0.21268,0.17641,0.25045,1.00000"
+    ],
+    "orientation" : {
+      "start" : {
+        "x" : 0.5,
+        "y" : 0
+      },
+      "stop" : {
+        "x" : 0.5,
+        "y" : 0.7
+      }
+    }
   },
   "groups" : [
-
+    {
+      "layers" : [
+        {
+          "fill" : {
+            "linear-gradient" : [
+              "srgb:0.94764,0.52532,0.34275,1.00000",
+              "display-p3:0.93783,0.81929,0.58045,1.00000"
+            ],
+            "orientation" : {
+              "start" : {
+                "x" : 0.9725087537934727,
+                "y" : 0.5
+              },
+              "stop" : {
+                "x" : 0.02326266388839241,
+                "y" : 0.5
+              }
+            }
+          },
+          "image-name" : "Scanboard.005.png",
+          "name" : "Laser"
+        }
+      ],
+      "name" : "Laser",
+      "shadow" : {
+        "kind" : "layer-color",
+        "opacity" : 1
+      },
+      "specular" : true,
+      "translucency" : {
+        "enabled" : false,
+        "value" : 0.5
+      }
+    },
+    {
+      "blur-material" : null,
+      "layers" : [
+        {
+          "fill-specializations" : [
+            {
+              "appearance" : "dark",
+              "value" : {
+                "linear-gradient" : [
+                  "srgb:0.62463,0.71403,0.81367,1.00000",
+                  "srgb:0.39785,0.37209,0.46055,1.00000"
+                ],
+                "orientation" : {
+                  "start" : {
+                    "x" : 0.5,
+                    "y" : 0
+                  },
+                  "stop" : {
+                    "x" : 0.5,
+                    "y" : 0.7
+                  }
+                }
+              }
+            }
+          ],
+          "image-name" : "Scanboard.003.png",
+          "name" : "Code",
+          "opacity-specializations" : [
+            {
+              "appearance" : "tinted",
+              "value" : 0.45
+            }
+          ]
+        }
+      ],
+      "name" : "67",
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 1
+      },
+      "specular" : true,
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
   ],
   "supported-platforms" : {
     "circles" : [

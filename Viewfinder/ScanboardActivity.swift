@@ -21,10 +21,10 @@ struct ScanboardLiveActivity: Widget {
                     .font(.title2)
                     .foregroundStyle(.white)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Tap to Scan")
+                    Text("App.Name")
                         .font(.headline)
                         .foregroundStyle(.white)
-                    Text("Tap here to scan a barcode")
+                    Text("LiveActivity.TapToScan")
                         .font(.subheadline)
                         .foregroundStyle(.white.opacity(0.7))
                 }
@@ -44,14 +44,14 @@ struct ScanboardLiveActivity: Widget {
                         .padding(.top, 12)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text("Tap to Scan")
+                    Text("App.Name")
                         .font(.headline)
                         .padding(.top, 12)
                 }
             } compactLeading: {
                 Image(systemName: "barcode.viewfinder")
             } compactTrailing: {
-                Text("Scan")
+                Text("LiveActivity.Scan")
                     .font(.caption)
             } minimal: {
                 Image(systemName: "barcode.viewfinder")
