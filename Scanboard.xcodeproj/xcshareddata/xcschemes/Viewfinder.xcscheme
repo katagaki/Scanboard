@@ -17,8 +17,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E401C5CF2F64E2E400C48093"
-               BuildableName = "ViewfinderExtension.appex"
-               BlueprintName = "ViewfinderExtension"
+               BuildableName = "Viewfinder.appex"
+               BlueprintName = "Viewfinder"
                ReferencedContainer = "container:Scanboard.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
