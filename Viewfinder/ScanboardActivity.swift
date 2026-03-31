@@ -1,11 +1,14 @@
 import SwiftUI
 import WidgetKit
 import ActivityKit
+import AppIntents
 
 @main
 struct ScanboardWidgetBundle: WidgetBundle {
     var body: some Widget {
         ScanboardLiveActivity()
+        ScanboardControlWidget()
+        ScanboardCameraControl()
     }
 }
 
