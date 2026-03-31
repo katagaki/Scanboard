@@ -7,10 +7,5 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.securecapture</string>
 	</dict>
-	<key>EXAppExtensionAttributes</key>
-	<dict>
-		<key>EXExtensionPointIdentifier</key>
-		<string>com.apple.securecapture</string>
-	</dict>
 </dict>
 </plist>
