@@ -196,10 +196,8 @@ struct ScanHistorySheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(role: .cancel) {
+                    Button(role: .confirm) {
                         dismiss()
-                    } label: {
-                        Text("History.Done")
                     }
                 }
             }
