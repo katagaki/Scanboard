@@ -42,7 +42,8 @@ struct ScannerView: View {
                             .font(.title3)
                             .padding(10)
                     }
-                    .glassEffect(.regular, in: .circle)
+                    .tint(.primary)
+                    .glassEffect(.regular.interactive(), in: .circle)
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
