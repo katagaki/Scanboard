@@ -13,6 +13,8 @@ struct ScannerView: View {
     @State private var toastVisible = false
     @State private var toastID = 0
     @State private var coordinator: ScannerCoordinator?
+    @State private var showHistory = false
+    @StateObject private var historyStore = ScanHistoryStore.shared
 
     var body: some View {
         ZStack {
@@ -27,6 +29,23 @@ struct ScannerView: View {
                     .shadow(color: .accent, radius: 5.0)
                     .frame(width: 260, height: 160)
                     .transition(.opacity)
+            }
+
+            // History button
+            VStack {
+                HStack {
+                    Spacer()
+                    Button {
+                        showHistory = true
+                    } label: {
+                        Image(systemName: "clock.arrow.circlepath")
+                    }
+                    .padding(10)
+                    .glassEffect(.regular.interactive(), in: .circle)
+                }
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+                Spacer()
             }
 
             // Toast overlay
@@ -67,6 +86,9 @@ struct ScannerView: View {
         .onDisappear {
             stopSession()
         }
+        .sheet(isPresented: $showHistory) {
+            ScanHistorySheet(store: historyStore)
+        }
     }
 
     // MARK: - Session Setup
@@ -77,6 +99,9 @@ struct ScannerView: View {
         let coord = ScannerCoordinator { value in
             UIPasteboard.general.string = value
             UINotificationFeedbackGenerator().notificationOccurred(.success)
+
+            historyStore.addScan(value)
+            LiveActivityManager.updateLastScannedItem(value)
 
             toastValue = value
             toastVisible = true
