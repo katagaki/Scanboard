@@ -57,6 +57,7 @@
 				Assets.xcassets,
 				InfoPlist.xcstrings,
 				Localizable.xcstrings,
+				OpenScannerIntent.swift,
 				ScanboardActivityAttributes.swift,
 			);
 			target = E401C5CF2F64E2E400C48093 /* Viewfinder */;
