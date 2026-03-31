@@ -17,7 +17,7 @@ struct ScanboardLiveActivity: Widget {
     private let deepLink = URL(string: "scanboard://scan")!
 
     var body: some WidgetConfiguration {
-        ActivityConfiguration(for: ScanboardActivityAttributes.self) { _ in
+        ActivityConfiguration(for: ScanboardActivityAttributes.self) { context in
             // Lock Screen banner
             HStack(spacing: 12) {
                 Image(systemName: "barcode.viewfinder")
@@ -39,7 +39,7 @@ struct ScanboardLiveActivity: Widget {
             .padding()
             .activityBackgroundTint(.clear)
             .widgetURL(deepLink)
-        } dynamicIsland: { _ in
+        } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
                     Image(systemName: "barcode.viewfinder")
@@ -50,6 +50,19 @@ struct ScanboardLiveActivity: Widget {
                     Text("App.Name")
                         .font(.headline)
                         .padding(.top, 12)
+                }
+                DynamicIslandExpandedRegion(.bottom) {
+                    VStack(spacing: 4) {
+                        Text("LiveActivity.TapToScan")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        if let lastItem = context.state.lastScannedItem {
+                            Text(lastItem)
+                                .font(.system(.caption, design: .monospaced))
+                                .lineLimit(1)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
                 }
             } compactLeading: {
                 Image(systemName: "barcode.viewfinder")

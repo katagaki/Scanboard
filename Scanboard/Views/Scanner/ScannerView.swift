@@ -13,6 +13,8 @@ struct ScannerView: View {
     @State private var toastVisible = false
     @State private var toastID = 0
     @State private var coordinator: ScannerCoordinator?
+    @State private var showHistory = false
+    @StateObject private var historyStore = ScanHistoryStore.shared
 
     var body: some View {
         ZStack {
@@ -27,6 +29,24 @@ struct ScannerView: View {
                     .shadow(color: .accent, radius: 5.0)
                     .frame(width: 260, height: 160)
                     .transition(.opacity)
+            }
+
+            // History button
+            VStack {
+                HStack {
+                    Spacer()
+                    Button {
+                        showHistory = true
+                    } label: {
+                        Image(systemName: "clock.arrow.circlepath")
+                            .font(.title3)
+                            .padding(10)
+                    }
+                    .glassEffect(.regular, in: .circle)
+                }
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+                Spacer()
             }
 
             // Toast overlay
@@ -67,6 +87,9 @@ struct ScannerView: View {
         .onDisappear {
             stopSession()
         }
+        .sheet(isPresented: $showHistory) {
+            ScanHistorySheet(store: historyStore)
+        }
     }
 
     // MARK: - Session Setup
@@ -77,6 +100,9 @@ struct ScannerView: View {
         let coord = ScannerCoordinator { value in
             UIPasteboard.general.string = value
             UINotificationFeedbackGenerator().notificationOccurred(.success)
+
+            historyStore.addScan(value)
+            LiveActivityManager.updateLastScannedItem(value)
 
             toastValue = value
             toastVisible = true
@@ -129,6 +155,54 @@ struct ScannerView: View {
         let session = self.session
         if session.isRunning {
             session.stopRunning()
+        }
+    }
+}
+
+// MARK: - Scan History Sheet
+
+struct ScanHistorySheet: View {
+
+    @ObservedObject var store: ScanHistoryStore
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            List {
+                ForEach(store.items) { item in
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(item.value)
+                            .font(.system(.body, design: .monospaced))
+                        Text(item.date, style: .date)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .swipeActions(edge: .trailing) {
+                        Button(role: .destructive) {
+                            store.deleteItem(item)
+                        } label: {
+                            Label("History.Delete", systemImage: "trash")
+                        }
+                    }
+                }
+            }
+            .overlay {
+                if store.items.isEmpty {
+                    ContentUnavailableView("History.Empty",
+                                           systemImage: "barcode.viewfinder")
+                }
+            }
+            .navigationTitle("History.Title")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(role: .cancel) {
+                        dismiss()
+                    } label: {
+                        Text("History.Done")
+                    }
+                }
+            }
         }
     }
 }

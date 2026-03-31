@@ -23,6 +23,17 @@ enum LiveActivityManager {
         }
     }
 
+    static func updateLastScannedItem(_ value: String) {
+        let state = ScanboardActivityAttributes.ContentState(lastScannedItem: value)
+        let content = ActivityContent(state: state,
+                                      staleDate: Date().addingTimeInterval(8 * 3600))
+        Task {
+            for activity in Activity<ScanboardActivityAttributes>.activities {
+                await activity.update(content)
+            }
+        }
+    }
+
     static func endAllActivities() async {
         for activity in Activity<ScanboardActivityAttributes>.activities {
             await activity.end(nil, dismissalPolicy: .immediate)
