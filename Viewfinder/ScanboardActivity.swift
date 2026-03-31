@@ -8,7 +8,7 @@ struct ScanboardWidgetBundle: WidgetBundle {
     var body: some Widget {
         ScanboardLiveActivity()
         ScanboardControlWidget()
-        ScanboardCameraControl()
+        ScanboardLockScreenWidget()
     }
 }
 

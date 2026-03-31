@@ -10,6 +10,7 @@
 		E401C5D32F64E2E500C48093 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E401C5D22F64E2E400C48093 /* WidgetKit.framework */; };
 		E401C5D52F64E2E500C48093 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E401C5D42F64E2E500C48093 /* SwiftUI.framework */; };
 		E401C5E22F64E2E500C48093 /* Viewfinder.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E401C5D02F64E2E400C48093 /* Viewfinder.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E4CC10012F65A00000C48093 /* ScanboardCameraCapture.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E4CC10032F65A00000C48093 /* ScanboardCameraCapture.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -19,6 +20,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = E401C5CF2F64E2E400C48093;
 			remoteInfo = ViewfinderExtension;
+		};
+		E4CC10022F65A00000C48093 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4B6CD342F644B87005C5E55 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E4CC10082F65A00000C48093;
+			remoteInfo = ScanboardCameraCapture;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -30,6 +38,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				E401C5E22F64E2E500C48093 /* Viewfinder.appex in Embed Foundation Extensions */,
+				E4CC10012F65A00000C48093 /* ScanboardCameraCapture.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -41,6 +50,7 @@
 		E401C5D22F64E2E400C48093 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		E401C5D42F64E2E500C48093 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		E4B6CD3C2F644B87005C5E55 /* Scanboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scanboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4CC10032F65A00000C48093 /* ScanboardCameraCapture.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ScanboardCameraCapture.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -61,6 +71,13 @@
 				ScanboardActivityAttributes.swift,
 			);
 			target = E401C5CF2F64E2E400C48093 /* Viewfinder */;
+		};
+		E4CC10042F65A00000C48093 /* Exceptions for "ScanboardCameraCapture" folder in "ScanboardCameraCapture" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = E4CC10082F65A00000C48093 /* ScanboardCameraCapture */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -86,6 +103,14 @@
 			path = Scanboard;
 			sourceTree = "<group>";
 		};
+		E4CC10062F65A00000C48093 /* ScanboardCameraCapture */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E4CC10042F65A00000C48093 /* Exceptions for "ScanboardCameraCapture" folder in "ScanboardCameraCapture" target */,
+			);
+			path = ScanboardCameraCapture;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +124,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		E4B6CD392F644B87005C5E55 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4CC10072F65A00000C48093 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -123,6 +155,7 @@
 				E477712A2F64EA560057B0AF /* Shared */,
 				E4B6CD3E2F644B87005C5E55 /* Scanboard */,
 				E401C5D62F64E2E500C48093 /* Viewfinder */,
+				E4CC10062F65A00000C48093 /* ScanboardCameraCapture */,
 				E401C5D12F64E2E400C48093 /* Frameworks */,
 				E4B6CD3D2F644B87005C5E55 /* Products */,
 			);
@@ -133,6 +166,7 @@
 			children = (
 				E4B6CD3C2F644B87005C5E55 /* Scanboard.app */,
 				E401C5D02F64E2E400C48093 /* Viewfinder.appex */,
+				E4CC10032F65A00000C48093 /* ScanboardCameraCapture.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -175,6 +209,7 @@
 			);
 			dependencies = (
 				E401C5E12F64E2E500C48093 /* PBXTargetDependency */,
+				E4CC100B2F65A00000C48093 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E477712A2F64EA560057B0AF /* Shared */,
@@ -186,6 +221,28 @@
 			productName = Scanboard;
 			productReference = E4B6CD3C2F644B87005C5E55 /* Scanboard.app */;
 			productType = "com.apple.product-type.application";
+		};
+		E4CC10082F65A00000C48093 /* ScanboardCameraCapture */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E4CC100E2F65A00000C48093 /* Build configuration list for PBXNativeTarget "ScanboardCameraCapture" */;
+			buildPhases = (
+				E4CC100A2F65A00000C48093 /* Sources */,
+				E4CC10072F65A00000C48093 /* Frameworks */,
+				E4CC10092F65A00000C48093 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E4CC10062F65A00000C48093 /* ScanboardCameraCapture */,
+			);
+			name = ScanboardCameraCapture;
+			packageProductDependencies = (
+			);
+			productName = ScanboardCameraCapture;
+			productReference = E4CC10032F65A00000C48093 /* ScanboardCameraCapture.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -201,6 +258,9 @@
 						CreatedOnToolsVersion = 26.3;
 					};
 					E4B6CD3B2F644B87005C5E55 = {
+						CreatedOnToolsVersion = 26.3;
+					};
+					E4CC10082F65A00000C48093 = {
 						CreatedOnToolsVersion = 26.3;
 					};
 				};
@@ -222,6 +282,7 @@
 			targets = (
 				E4B6CD3B2F644B87005C5E55 /* Scanboard */,
 				E401C5CF2F64E2E400C48093 /* Viewfinder */,
+				E4CC10082F65A00000C48093 /* ScanboardCameraCapture */,
 			);
 		};
 /* End PBXProject section */
@@ -235,6 +296,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		E4B6CD3A2F644B87005C5E55 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4CC10092F65A00000C48093 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -258,6 +326,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E4CC100A2F65A00000C48093 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +340,11 @@
 			isa = PBXTargetDependency;
 			target = E401C5CF2F64E2E400C48093 /* Viewfinder */;
 			targetProxy = E401C5E02F64E2E500C48093 /* PBXContainerItemProxy */;
+		};
+		E4CC100B2F65A00000C48093 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E4CC10082F65A00000C48093 /* ScanboardCameraCapture */;
+			targetProxy = E4CC10022F65A00000C48093 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -528,6 +608,62 @@
 			};
 			name = Release;
 		};
+		E4CC100C2F65A00000C48093 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YYM4Z6MU8F;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScanboardCameraCapture/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ScanboardCameraCapture;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scans barcodes using the camera.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.Scanboard.ShutterButton;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E4CC100D2F65A00000C48093 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YYM4Z6MU8F;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScanboardCameraCapture/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ScanboardCameraCapture;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scans barcodes using the camera.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.Scanboard.ShutterButton;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -554,6 +690,15 @@
 			buildConfigurations = (
 				E4B6CD482F644B88005C5E55 /* Debug */,
 				E4B6CD492F644B88005C5E55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E4CC100E2F65A00000C48093 /* Build configuration list for PBXNativeTarget "ScanboardCameraCapture" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E4CC100C2F65A00000C48093 /* Debug */,
+				E4CC100D2F65A00000C48093 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
