@@ -40,8 +40,8 @@ struct ScannerView: View {
                     } label: {
                         Image(systemName: "clock.arrow.circlepath")
                     }
-                    .controlShape(.circle)
-                    .buttonStyle(.glassProminent)
+                    .padding(10)
+                    .glassEffect(.regular.interactive(), in: .circle)
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 8)

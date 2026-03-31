@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 
 struct ScanHistoryItem: Codable, Identifiable, Equatable {
     let id: UUID
