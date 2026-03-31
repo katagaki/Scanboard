@@ -1,3 +1,5 @@
+import Foundation
+import Observation
 import SwiftUI
 
 struct ScanHistoryItem: Codable, Identifiable, Equatable {
@@ -13,13 +15,14 @@ struct ScanHistoryItem: Codable, Identifiable, Equatable {
 }
 
 @MainActor
-final class ScanHistoryStore: ObservableObject {
+@Observable
+final class ScanHistoryStore {
 
     static let shared = ScanHistoryStore()
 
     private static let storeKey = "ScanHistory"
 
-    @Published private(set) var items: [ScanHistoryItem] = []
+    private(set) var items: [ScanHistoryItem] = []
 
     private let kvStore = NSUbiquitousKeyValueStore.default
 

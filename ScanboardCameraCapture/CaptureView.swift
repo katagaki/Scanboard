@@ -144,7 +144,7 @@ private final class CaptureCoordinator: NSObject, AVCaptureMetadataOutputObjects
         guard value != lastScannedValue else { return }
 
         lastScannedValue = value
-        onScan(value)
+        Task { @MainActor in onScan(value) }
 
         cooldownWorkItem?.cancel()
         let item = DispatchWorkItem { [weak self] in

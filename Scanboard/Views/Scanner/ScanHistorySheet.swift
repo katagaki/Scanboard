@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ScanHistorySheet: View {
 
-    @ObservedObject var store: ScanHistoryStore
+    var store: ScanHistoryStore
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {

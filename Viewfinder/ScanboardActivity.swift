@@ -27,9 +27,16 @@ struct ScanboardLiveActivity: Widget {
                     Text("App.Name")
                         .font(.headline)
                         .foregroundStyle(.white)
-                    Text("LiveActivity.TapToScan")
-                        .font(.subheadline)
-                        .foregroundStyle(.white.opacity(0.7))
+                    if let lastItem = context.state.lastScannedItem {
+                        Text(lastItem)
+                            .font(.system(.subheadline, design: .monospaced))
+                            .foregroundStyle(.white.opacity(0.9))
+                            .lineLimit(1)
+                    } else {
+                        Text("LiveActivity.TapToScan")
+                            .font(.subheadline)
+                            .foregroundStyle(.white.opacity(0.7))
+                    }
                 }
                 Spacer()
                 Image(systemName: "chevron.right")
@@ -47,28 +54,38 @@ struct ScanboardLiveActivity: Widget {
                         .padding(.top, 12)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text("App.Name")
+                    Text("LiveActivity.Scan")
                         .font(.headline)
                         .padding(.top, 12)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    VStack(spacing: 4) {
+                    if let lastItem = context.state.lastScannedItem {
+                        Text(lastItem)
+                            .font(.system(.subheadline, design: .monospaced))
+                            .lineLimit(1)
+                            .foregroundStyle(.primary)
+                    } else {
                         Text("LiveActivity.TapToScan")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
-                        if let lastItem = context.state.lastScannedItem {
-                            Text(lastItem)
-                                .font(.system(.caption, design: .monospaced))
-                                .lineLimit(1)
-                                .foregroundStyle(.secondary)
-                        }
                     }
                 }
             } compactLeading: {
                 Image(systemName: "barcode.viewfinder")
             } compactTrailing: {
-                Text("LiveActivity.Scan")
-                    .font(.caption)
+                if let lastItem = context.state.lastScannedItem {
+                    Text(lastItem)
+                        .font(.system(.caption2, design: .monospaced))
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(1)
+                        .truncationMode(.head)
+                        .id(lastItem)
+                        .transition(.push(from: .trailing))
+                        .animation(.spring(duration: 0.4), value: lastItem)
+                } else {
+                    Text("LiveActivity.Scan")
+                        .font(.caption)
+                }
             } minimal: {
                 Image(systemName: "barcode.viewfinder")
             }

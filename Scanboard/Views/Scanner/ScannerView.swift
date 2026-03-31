@@ -14,7 +14,7 @@ struct ScannerView: View {
     @State private var toastID = 0
     @State private var coordinator: ScannerCoordinator?
     @State private var showHistory = false
-    @StateObject private var historyStore = ScanHistoryStore.shared
+    @State private var historyStore = ScanHistoryStore.shared
 
     var body: some View {
         ZStack {
@@ -39,9 +39,11 @@ struct ScannerView: View {
                         showHistory = true
                     } label: {
                         Image(systemName: "clock.arrow.circlepath")
+                            .font(.title3)
                     }
                     .padding(10)
                     .glassEffect(.regular.interactive(), in: .circle)
+                    .controlSize(.large)
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
@@ -180,7 +182,7 @@ private final class ScannerCoordinator: NSObject, AVCaptureMetadataOutputObjects
         guard value != lastScannedValue else { return }
 
         lastScannedValue = value
-        onScan(value)
+        Task { @MainActor in onScan(value) }
 
         cooldownWorkItem?.cancel()
         let item = DispatchWorkItem { [weak self] in
