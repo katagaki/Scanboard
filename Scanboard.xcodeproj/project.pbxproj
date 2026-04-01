@@ -261,7 +261,7 @@
 			);
 			productName = ScanboardCameraCapture;
 			productReference = E4CC10032F65A00000C48093 /* ScanboardCameraCapture.appex */;
-			productType = "com.apple.product-type.app-extension";
+			productType = "com.apple.product-type.extensionkit-extension";
 		};
 /* End PBXNativeTarget section */
 
