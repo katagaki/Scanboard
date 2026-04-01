@@ -38,9 +38,19 @@
 			dstSubfolderSpec = 13;
 			files = (
 				E401C5E22F64E2E500C48093 /* Viewfinder.appex in Embed Foundation Extensions */,
-				E4CC10012F65A00000C48093 /* ScanboardCameraCapture.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4CC10152F65A20000C48093 /* Embed ExtensionKit Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				E4CC10012F65A00000C48093 /* ScanboardCameraCapture.appex in Embed ExtensionKit Extensions */,
+			);
+			name = "Embed ExtensionKit Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -212,6 +222,7 @@
 				E4B6CD392F644B87005C5E55 /* Frameworks */,
 				E4B6CD3A2F644B87005C5E55 /* Resources */,
 				E4B6CD5C2F644CF2005C5E55 /* Embed Foundation Extensions */,
+				E4CC10152F65A20000C48093 /* Embed ExtensionKit Extensions */,
 			);
 			buildRules = (
 			);
