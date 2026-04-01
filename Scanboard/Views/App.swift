@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import LockedCameraCapture
 
 @main
 struct ScanboardApp: App {
@@ -37,6 +38,10 @@ struct ScanboardApp: App {
                 .task {
                     LiveActivityManager.startActivity()
                 }
+        }
+
+        LockedCameraCaptureUIScene { _ in
+            ScannerView()
         }
     }
 }

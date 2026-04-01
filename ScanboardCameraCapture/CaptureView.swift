@@ -48,6 +48,12 @@ struct CaptureView: View {
             }
         }
         .animation(.spring(response: 0.35), value: scannedValue)
+        .onCameraCaptureEvent { event in
+            if event.phase == .ended {
+                // Camera Control button pressed — no-op for barcode scanner
+                // but required for the system to keep the extension alive
+            }
+        }
         .onAppear {
             configureSession()
         }
