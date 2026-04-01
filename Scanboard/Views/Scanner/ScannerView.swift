@@ -39,11 +39,10 @@ struct ScannerView: View {
                         showHistory = true
                     } label: {
                         Image(systemName: "clock.arrow.circlepath")
-                            .font(.title3)
+                            .font(.system(size: 17, weight: .semibold))
+                            .frame(width: 44, height: 44)
                     }
-                    .padding(10)
                     .glassEffect(.regular.interactive(), in: .circle)
-                    .controlSize(.large)
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
