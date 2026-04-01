@@ -62,8 +62,10 @@ struct SetupFlowView: View {
 
     private func requestCamera() {
         AVCaptureDevice.requestAccess(for: .video) { granted in
-            cameraAuthorized = granted
-            cameraDenied = !granted
+            DispatchQueue.main.async {
+                cameraAuthorized = granted
+                cameraDenied = !granted
+            }
         }
     }
 
