@@ -38,9 +38,19 @@
 			dstSubfolderSpec = 13;
 			files = (
 				E401C5E22F64E2E500C48093 /* Viewfinder.appex in Embed Foundation Extensions */,
-				E4CC10012F65A00000C48093 /* ScanboardCameraCapture.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4CC10152F65A20000C48093 /* Embed ExtensionKit Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				E4CC10012F65A00000C48093 /* ScanboardCameraCapture.appex in Embed ExtensionKit Extensions */,
+			);
+			name = "Embed ExtensionKit Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -79,6 +89,13 @@
 			);
 			target = E4CC10082F65A00000C48093 /* ScanboardCameraCapture */;
 		};
+		E4CC10142F65A10000C48093 /* Exceptions for "Shared" folder in "ScanboardCameraCapture" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				OpenScannerIntent.swift,
+			);
+			target = E4CC10082F65A00000C48093 /* ScanboardCameraCapture */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -94,6 +111,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				E477712E2F64EA6B0057B0AF /* Exceptions for "Shared" folder in "Viewfinder" target */,
+				E4CC10142F65A10000C48093 /* Exceptions for "Shared" folder in "ScanboardCameraCapture" target */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -204,6 +222,7 @@
 				E4B6CD392F644B87005C5E55 /* Frameworks */,
 				E4B6CD3A2F644B87005C5E55 /* Resources */,
 				E4B6CD5C2F644CF2005C5E55 /* Embed Foundation Extensions */,
+				E4CC10152F65A20000C48093 /* Embed ExtensionKit Extensions */,
 			);
 			buildRules = (
 			);
@@ -242,7 +261,7 @@
 			);
 			productName = ScanboardCameraCapture;
 			productReference = E4CC10032F65A00000C48093 /* ScanboardCameraCapture.appex */;
-			productType = "com.apple.product-type.app-extension";
+			productType = "com.apple.product-type.extensionkit-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -465,7 +484,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -526,7 +545,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

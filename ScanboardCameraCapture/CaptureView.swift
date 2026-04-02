@@ -1,5 +1,6 @@
 import SwiftUI
 import AVFoundation
+import AVKit
 import LockedCameraCapture
 import UIKit
 
@@ -48,6 +49,11 @@ struct CaptureView: View {
             }
         }
         .animation(.spring(response: 0.35), value: scannedValue)
+        .onCameraCaptureEvent { event in
+            if event.phase == .ended {
+                // Camera Control button pressed — no-op for barcode scanner
+            }
+        }
         .onAppear {
             configureSession()
         }
