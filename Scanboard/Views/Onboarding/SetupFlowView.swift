@@ -286,7 +286,6 @@ private struct SectionLabel: View {
             Text(text)
                 .font(.system(size: 11, weight: .bold))
                 .foregroundColor(.accentColor)
-                .tracking(2)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
