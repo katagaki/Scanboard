@@ -7,11 +7,12 @@ import AVFoundation
 struct ContentView: View {
 
     @Binding var showScanner: Bool
+    var openedFromKeyboard: Bool = false
 
     var body: some View {
         Group {
             if AVCaptureDevice.authorizationStatus(for: .video) == .authorized || showScanner {
-                ScannerView()
+                ScannerView(showReturnHint: openedFromKeyboard)
             } else {
                 SetupFlowView(onReady: {
                     showScanner = true

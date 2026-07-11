@@ -1,106 +1,89 @@
-import AVFoundation
 import SwiftUI
 import UIKit
 
 struct ScannerKeyboardView: View {
 
-    var scanner: KeyboardScanner
+    var model: KeyboardModel
     let insertText: (String) -> Void
     let deleteBackward: () -> Void
+    let openScanner: () -> Void
     let configureInputModeSwitchButton: (UIButton) -> Void
-
-    @State private var toastVisible = false
 
     var body: some View {
         VStack(spacing: 0) {
-            cameraArea
+            content
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.black)
-                .clipped()
 
             keyRow
                 .padding(8)
-                .background(.thinMaterial)
-        }
-        .task(id: scanner.scanCount) {
-            guard scanner.scanCount > 0 else { return }
-            toastVisible = true
-            try? await Task.sleep(for: .seconds(2.5))
-            guard !Task.isCancelled else { return }
-            toastVisible = false
         }
     }
 
-    // MARK: - Camera Area
+    // MARK: - Content
 
     @ViewBuilder
-    private var cameraArea: some View {
-        switch scanner.state {
-        case .idle:
-            ProgressView()
-                .tint(.white)
-        case .scanning:
-            ZStack {
-                ScannerPreviewView(session: scanner.session)
-
-                RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(.white.opacity(0.9), lineWidth: 2)
-                    .frame(width: 200, height: 110)
-
-                if toastVisible, let value = scanner.lastScannedValue {
-                    VStack {
-                        Spacer()
-                        HStack(spacing: 6) {
-                            Image(systemName: "checkmark.circle.fill")
-                                .foregroundStyle(.green)
-                            Text(value)
-                                .lineLimit(1)
-                                .truncationMode(.middle)
-                                .font(.system(.footnote, design: .monospaced, weight: .semibold))
-                        }
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 8)
-                        .background(.ultraThinMaterial, in: .capsule)
-                        .padding(.bottom, 10)
-                    }
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-                }
-            }
-            .animation(.spring(response: 0.3), value: toastVisible)
-        case .needsFullAccess:
+    private var content: some View {
+        if model.hasFullAccess {
+            scanArea
+        } else {
             statusMessage(
                 icon: "lock.shield",
-                title: "Full Access Required",
-                message: "Turn on Allow Full Access for this keyboard in Settings > General > Keyboard > Keyboards to scan with the camera."
-            )
-        case .needsCameraPermission:
-            VStack(spacing: 12) {
-                statusMessage(
-                    icon: "camera",
-                    title: "Camera Access",
-                    message: "Allow camera access to scan barcodes and QR codes."
-                )
-                Button("Enable Camera") {
-                    scanner.requestCameraAccess()
-                }
-                .buttonStyle(.borderedProminent)
-            }
-        case .cameraDenied:
-            statusMessage(
-                icon: "video.slash",
-                title: "Camera Access Denied",
-                message: "Allow camera access in Settings > Privacy & Security > Camera."
-            )
-        case .cameraUnavailable:
-            statusMessage(
-                icon: "exclamationmark.triangle",
-                title: "Camera Unavailable",
-                message: "The camera could not be started."
+                title: "Keyboard.FullAccessRequired",
+                message: "Keyboard.FullAccessMessage"
             )
         }
     }
 
-    private func statusMessage(icon: String, title: String, message: String) -> some View {
+    private var scanArea: some View {
+        VStack(spacing: 8) {
+            Button(action: openScanner) {
+                HStack(spacing: 8) {
+                    Image(systemName: "qrcode.viewfinder")
+                        .font(.system(size: 20, weight: .semibold))
+                    Text("Keyboard.Scan")
+                        .font(.system(size: 17, weight: .semibold))
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 44)
+            }
+            .buttonStyle(AccentKeyButtonStyle())
+            .padding(.horizontal, 8)
+            .padding(.top, 8)
+
+            if model.recentScans.isEmpty {
+                Spacer()
+                Text("Keyboard.EmptyHint")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+                Spacer()
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 4) {
+                        ForEach(model.recentScans.prefix(12)) { item in
+                            Button {
+                                insertText(item.value)
+                            } label: {
+                                Text(item.value)
+                                    .font(.system(size: 16, design: .monospaced))
+                                    .lineLimit(1)
+                                    .truncationMode(.middle)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 8)
+                                    .contentShape(.rect)
+                            }
+                            .buttonStyle(KeyButtonStyle())
+                        }
+                    }
+                    .padding(.horizontal, 8)
+                }
+            }
+        }
+    }
+
+    private func statusMessage(icon: String, title: LocalizedStringKey, message: LocalizedStringKey) -> some View {
         VStack(spacing: 6) {
             Image(systemName: icon)
                 .font(.title2)
@@ -110,27 +93,27 @@ struct ScannerKeyboardView: View {
                 .font(.caption)
                 .multilineTextAlignment(.center)
         }
-        .foregroundStyle(.white)
+        .foregroundStyle(.secondary)
         .padding(.horizontal, 24)
     }
 
     // MARK: - Key Row
 
     private var keyRow: some View {
-        HStack(spacing: 8) {
-            if scanner.needsInputModeSwitchKey {
+        HStack(spacing: 6) {
+            if model.needsInputModeSwitchKey {
                 InputModeSwitchKey(configure: configureInputModeSwitchButton)
-                    .frame(width: 52, height: 40)
-                    .background(keyBackground(pressed: false))
+                    .frame(width: 46, height: 42)
+                    .background(keyBackground(special: true))
             }
 
             Button {
                 insertText(" ")
             } label: {
-                Text("space")
+                Text("Keyboard.Space")
                     .font(.system(size: 16))
                     .frame(maxWidth: .infinity)
-                    .frame(height: 40)
+                    .frame(height: 42)
             }
             .buttonStyle(KeyButtonStyle())
 
@@ -138,36 +121,83 @@ struct ScannerKeyboardView: View {
                 deleteBackward()
             } label: {
                 Image(systemName: "delete.left")
-                    .font(.system(size: 16))
-                    .frame(width: 52, height: 40)
+                    .font(.system(size: 17))
+                    .frame(width: 46, height: 42)
             }
-            .buttonStyle(KeyButtonStyle())
+            .buttonStyle(KeyButtonStyle(isSpecial: true))
 
             Button {
                 insertText("\n")
             } label: {
-                Text("return")
-                    .font(.system(size: 15))
-                    .frame(width: 76, height: 40)
+                Text("Keyboard.Return")
+                    .font(.system(size: 16))
+                    .frame(width: 88, height: 42)
             }
-            .buttonStyle(KeyButtonStyle())
+            .buttonStyle(KeyButtonStyle(isSpecial: true))
         }
     }
 }
 
 // MARK: - Key Styling
 
-private func keyBackground(pressed: Bool) -> some View {
-    RoundedRectangle(cornerRadius: 8)
-        .fill(Color(uiColor: .systemBackground))
-        .opacity(pressed ? 0.55 : 0.9)
+private enum KeyStyle {
+
+    static let cornerRadius: CGFloat = 9
+
+    /// Regular key fill, matching the system keyboard's letter keys.
+    static let keyFill = Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(white: 1.0, alpha: 0.30)
+            : UIColor.white
+    })
+
+    /// Darker fill used by the system keyboard's function keys
+    /// (shift, delete, globe, return).
+    static let specialKeyFill = Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(white: 1.0, alpha: 0.12)
+            : UIColor(red: 172 / 255, green: 177 / 255, blue: 185 / 255, alpha: 1)
+    })
+
+    /// The hard 1pt bottom edge under every system key.
+    static let edgeShadow = Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(white: 0, alpha: 0.50)
+            : UIColor(red: 137 / 255, green: 138 / 255, blue: 141 / 255, alpha: 1)
+    })
+}
+
+private func keyBackground(special: Bool) -> some View {
+    RoundedRectangle(cornerRadius: KeyStyle.cornerRadius)
+        .fill(special ? KeyStyle.specialKeyFill : KeyStyle.keyFill)
+        .shadow(color: KeyStyle.edgeShadow, radius: 0, y: 1)
 }
 
 private struct KeyButtonStyle: ButtonStyle {
+
+    var isSpecial = false
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundStyle(Color.primary)
-            .background(keyBackground(pressed: configuration.isPressed))
+            // The system keyboard swaps the two key fills while pressed
+            .background(keyBackground(special: isSpecial != configuration.isPressed))
+    }
+}
+
+/// The same key treatment as the rest of the keyboard, filled with the
+/// app's accent color, like the system keyboard's tinted return key.
+private struct AccentKeyButtonStyle: ButtonStyle {
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundStyle(.white)
+            .background(
+                RoundedRectangle(cornerRadius: KeyStyle.cornerRadius)
+                    .fill(Color.accentColor)
+                    .brightness(configuration.isPressed ? -0.12 : 0)
+                    .shadow(color: KeyStyle.edgeShadow, radius: 0, y: 1)
+            )
     }
 }
 
@@ -186,25 +216,4 @@ private struct InputModeSwitchKey: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UIButton, context: Context) {}
-}
-
-// MARK: - Camera Preview
-
-private struct ScannerPreviewView: UIViewRepresentable {
-
-    let session: AVCaptureSession
-
-    func makeUIView(context: Context) -> PreviewUIView {
-        let view = PreviewUIView()
-        view.previewLayer.session = session
-        view.previewLayer.videoGravity = .resizeAspectFill
-        return view
-    }
-
-    func updateUIView(_ uiView: PreviewUIView, context: Context) {}
-
-    class PreviewUIView: UIView {
-        override class var layerClass: AnyClass { AVCaptureVideoPreviewLayer.self }
-        var previewLayer: AVCaptureVideoPreviewLayer { layer as! AVCaptureVideoPreviewLayer }
-    }
 }

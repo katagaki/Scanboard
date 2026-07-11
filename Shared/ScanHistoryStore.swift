@@ -2,18 +2,6 @@ import Foundation
 import Observation
 import SwiftUI
 
-struct ScanHistoryItem: Codable, Identifiable, Equatable {
-    let id: UUID
-    let value: String
-    let date: Date
-
-    init(value: String, date: Date = Date()) {
-        self.id = UUID()
-        self.value = value
-        self.date = date
-    }
-}
-
 @MainActor
 @Observable
 final class ScanHistoryStore {
@@ -40,8 +28,13 @@ final class ScanHistoryStore {
     // MARK: - Public
 
     func addScan(_ value: String) {
-        // Ignore consecutive duplicates
-        if items.first?.value == value { return }
+        // Refresh consecutive duplicates instead of stacking them, so the
+        // scan date stays current for the keyboard's auto-insertion.
+        if items.first?.value == value {
+            items[0] = ScanHistoryItem(value: value)
+            saveToCloud()
+            return
+        }
         let item = ScanHistoryItem(value: value)
         items.insert(item, at: 0)
         saveToCloud()
@@ -63,12 +56,14 @@ final class ScanHistoryStore {
         guard let data = try? JSONEncoder().encode(items) else { return }
         kvStore.set(data, forKey: Self.storeKey)
         kvStore.synchronize()
+        SharedScanStore.save(items)
     }
 
     private func loadFromCloud() {
         guard let data = kvStore.data(forKey: Self.storeKey),
               let decoded = try? JSONDecoder().decode([ScanHistoryItem].self, from: data) else { return }
         items = decoded
+        SharedScanStore.save(items)
     }
 
     @objc private func cloudDidChange(_ notification: Notification) {

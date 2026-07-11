@@ -11,6 +11,9 @@ import SwiftUI
 struct ScanboardApp: App {
 
     @State private var showScanner = false
+    @State private var openedFromKeyboard = false
+
+    @Environment(\.scenePhase) private var scenePhase
 
 #if DEBUG
     private func loadRocketSimConnect() {
@@ -28,10 +31,16 @@ struct ScanboardApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView(showScanner: $showScanner)
+            ContentView(showScanner: $showScanner, openedFromKeyboard: openedFromKeyboard)
                 .onOpenURL { url in
                     if url.scheme == "scanboard" && url.host == "scan" {
                         showScanner = true
+                        openedFromKeyboard = true
+                    }
+                }
+                .onChange(of: scenePhase) { _, newPhase in
+                    if newPhase == .background {
+                        openedFromKeyboard = false
                     }
                 }
                 .task {

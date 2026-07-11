@@ -7,6 +7,10 @@ import Observation
 
 struct ScannerView: View {
 
+    /// True when the app was opened from the keyboard extension, so the user
+    /// should head back to the host app after scanning.
+    var showReturnHint: Bool = false
+
     @State private var session = AVCaptureSession()
     @State private var isScanning = false
     @State private var toastValue: String = ""
@@ -15,6 +19,7 @@ struct ScannerView: View {
     @State private var coordinator: ScannerCoordinator?
     @State private var showHistory = false
     @State private var historyStore = ScanHistoryStore.shared
+    @State private var hasScannedSinceOpen = false
 
     var body: some View {
         ZStack {
@@ -29,6 +34,28 @@ struct ScannerView: View {
                     .shadow(color: .accent, radius: 5.0)
                     .frame(width: 260, height: 160)
                     .transition(.opacity)
+            }
+
+            // Back-to-keyboard hint, pointing at the system's top-left
+            // back-to-previous-app breadcrumb
+            if showReturnHint && hasScannedSinceOpen {
+                VStack {
+                    HStack {
+                        HStack(spacing: 5) {
+                            Image(systemName: "arrow.turn.left.up")
+                                .font(.system(size: 12, weight: .bold))
+                            Text("Scanner.TapToGoBack")
+                                .font(.footnote.weight(.semibold))
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 7)
+                        .glassEffect(.regular, in: .capsule)
+                        Spacer()
+                    }
+                    .padding(.horizontal, 12)
+                    Spacer()
+                }
+                .transition(.move(edge: .top).combined(with: .opacity))
             }
 
             // History button
@@ -107,6 +134,9 @@ struct ScannerView: View {
             toastValue = value
             toastVisible = true
             toastID += 1
+            withAnimation(.spring(response: 0.35)) {
+                hasScannedSinceOpen = true
+            }
         }
         coordinator = coord
 

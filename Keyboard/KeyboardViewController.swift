@@ -3,24 +3,22 @@ import UIKit
 
 class KeyboardViewController: UIInputViewController {
 
-    private let scanner = KeyboardScanner()
+    private let model = KeyboardModel()
     private var heightConstraint: NSLayoutConstraint?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        scanner.onScan = { [weak self] value in
-            self?.textDocumentProxy.insertText(value)
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        }
-
         let rootView = ScannerKeyboardView(
-            scanner: scanner,
+            model: model,
             insertText: { [weak self] text in
                 self?.textDocumentProxy.insertText(text)
             },
             deleteBackward: { [weak self] in
                 self?.textDocumentProxy.deleteBackward()
+            },
+            openScanner: { [weak self] in
+                self?.openScannerApp()
             },
             configureInputModeSwitchButton: { [weak self] button in
                 guard let self else { return }
@@ -48,23 +46,24 @@ class KeyboardViewController: UIInputViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        scanner.hasFullAccess = hasFullAccess
-        if scanner.needsInputModeSwitchKey != needsInputModeSwitchKey {
-            scanner.needsInputModeSwitchKey = needsInputModeSwitchKey
-        }
-        scanner.start()
-    }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        scanner.stop()
+        model.hasFullAccess = hasFullAccess
+        if model.needsInputModeSwitchKey != needsInputModeSwitchKey {
+            model.needsInputModeSwitchKey = needsInputModeSwitchKey
+        }
+
+        model.refresh()
+        if let value = model.consumePendingScan() {
+            textDocumentProxy.insertText(value)
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        }
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
-        if scanner.needsInputModeSwitchKey != needsInputModeSwitchKey {
-            scanner.needsInputModeSwitchKey = needsInputModeSwitchKey
+        if model.needsInputModeSwitchKey != needsInputModeSwitchKey {
+            model.needsInputModeSwitchKey = needsInputModeSwitchKey
         }
 
         if heightConstraint == nil {
@@ -76,6 +75,47 @@ class KeyboardViewController: UIInputViewController {
         let targetHeight: CGFloat = traitCollection.verticalSizeClass == .compact ? 210 : 300
         if heightConstraint?.constant != targetHeight {
             heightConstraint?.constant = targetHeight
+        }
+    }
+
+    // MARK: - Opening the Scanner App
+
+    private func openScannerApp() {
+        guard let url = URL(string: "scanboard://scan") else { return }
+        model.markScanRequested()
+        if let extensionContext {
+            extensionContext.open(url) { [weak self] success in
+                if !success {
+                    Task { @MainActor [weak self] in
+                        self?.openURLViaResponderChain(url)
+                    }
+                }
+            }
+        } else {
+            openURLViaResponderChain(url)
+        }
+    }
+
+    /// Keyboard extensions have no sanctioned way to open URLs, and
+    /// `extensionContext.open` is not supported for the keyboard extension
+    /// point. The deprecated `openURL:` selector is force-blocked by UIKit,
+    /// so call the non-deprecated `open(_:options:completionHandler:)` —
+    /// which is only compile-time unavailable in extensions — through its
+    /// implementation pointer on the responder chain's UIApplication.
+    private func openURLViaResponderChain(_ url: URL) {
+        var responder: UIResponder? = self
+        while let current = responder {
+            if let application = current as? UIApplication {
+                let selector = NSSelectorFromString("openURL:options:completionHandler:")
+                guard application.responds(to: selector) else { return }
+                typealias OpenURLFunction = @convention(c) (
+                    AnyObject, Selector, NSURL, NSDictionary, AnyObject?
+                ) -> Void
+                let open = unsafeBitCast(application.method(for: selector), to: OpenURLFunction.self)
+                open(application, selector, url as NSURL, [:] as NSDictionary, nil)
+                return
+            }
+            responder = current.next
         }
     }
 }
