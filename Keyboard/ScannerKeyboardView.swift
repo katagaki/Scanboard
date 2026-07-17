@@ -170,7 +170,17 @@ private enum KeyStyle {
 private func keyBackground(special: Bool) -> some View {
     RoundedRectangle(cornerRadius: KeyStyle.cornerRadius)
         .fill(special ? KeyStyle.specialKeyFill : KeyStyle.keyFill)
-        .shadow(color: KeyStyle.edgeShadow, radius: 0, y: 1)
+        .background(keyBottomEdge)
+}
+
+/// The system keyboard's hard 1pt bottom edge, drawn as an explicit shape.
+/// On iOS 27, `.shadow(radius: 0, y: 1)` renders as a soft halo around the
+/// whole key instead of a hard edge, so the edge is drawn manually.
+private var keyBottomEdge: some View {
+    RoundedRectangle(cornerRadius: KeyStyle.cornerRadius)
+        .offset(y: 1)
+        .subtracting(RoundedRectangle(cornerRadius: KeyStyle.cornerRadius))
+        .fill(KeyStyle.edgeShadow)
 }
 
 private struct KeyButtonStyle: ButtonStyle {
@@ -196,7 +206,7 @@ private struct AccentKeyButtonStyle: ButtonStyle {
                 RoundedRectangle(cornerRadius: KeyStyle.cornerRadius)
                     .fill(Color.accentColor)
                     .brightness(configuration.isPressed ? -0.12 : 0)
-                    .shadow(color: KeyStyle.edgeShadow, radius: 0, y: 1)
+                    .background(keyBottomEdge)
             )
     }
 }
