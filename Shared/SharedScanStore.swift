@@ -5,8 +5,8 @@ struct ScanHistoryItem: Codable, Identifiable, Equatable {
     let value: String
     let date: Date
 
-    init(value: String, date: Date = Date()) {
-        self.id = UUID()
+    init(id: UUID = UUID(), value: String, date: Date = Date()) {
+        self.id = id
         self.value = value
         self.date = date
     }
