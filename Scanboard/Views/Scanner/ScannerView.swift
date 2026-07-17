@@ -11,6 +11,8 @@ struct ScannerView: View {
     /// should head back to the host app after scanning.
     var showReturnHint: Bool = false
 
+    @Environment(\.scenePhase) private var scenePhase
+
     @State private var session = AVCaptureSession()
     @State private var isScanning = false
     @State private var toastValue: String = ""
@@ -23,8 +25,18 @@ struct ScannerView: View {
 
     var body: some View {
         ZStack {
-            CameraPreviewView(session: session)
-                .ignoresSafeArea()
+            CameraPreviewView(session: session) { devicePoint in
+                focus(at: devicePoint)
+            }
+            .ignoresSafeArea()
+
+            // Cover the viewfinder whenever the scene isn't active so the
+            // App Switcher snapshot never contains a camera frame
+            if scenePhase != .active {
+                Rectangle()
+                    .fill(.black)
+                    .ignoresSafeArea()
+            }
 
             // Scan reticle
             if isScanning {
@@ -116,6 +128,59 @@ struct ScannerView: View {
         }
         .sheet(isPresented: $showHistory) {
             ScanHistorySheet(store: historyStore)
+        }
+        .onReceive(
+            NotificationCenter.default.publisher(for: AVCaptureDevice.subjectAreaDidChangeNotification)
+        ) { _ in
+            resetFocus()
+        }
+    }
+
+    // MARK: - Focus
+
+    private var captureDevice: AVCaptureDevice? {
+        (session.inputs.first as? AVCaptureDeviceInput)?.device
+    }
+
+    private func focus(at devicePoint: CGPoint) {
+        guard let device = captureDevice else { return }
+        do {
+            try device.lockForConfiguration()
+            if device.isFocusPointOfInterestSupported, device.isFocusModeSupported(.autoFocus) {
+                device.focusPointOfInterest = devicePoint
+                device.focusMode = .autoFocus
+            }
+            if device.isExposurePointOfInterestSupported, device.isExposureModeSupported(.autoExpose) {
+                device.exposurePointOfInterest = devicePoint
+                device.exposureMode = .autoExpose
+            }
+            // Return to continuous focus once the scene changes, so the
+            // scanner doesn't stay locked on a stale focus distance
+            device.isSubjectAreaChangeMonitoringEnabled = true
+            device.unlockForConfiguration()
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        } catch {
+            return
+        }
+    }
+
+    private func resetFocus() {
+        guard let device = captureDevice else { return }
+        do {
+            try device.lockForConfiguration()
+            let center = CGPoint(x: 0.5, y: 0.5)
+            if device.isFocusPointOfInterestSupported, device.isFocusModeSupported(.continuousAutoFocus) {
+                device.focusPointOfInterest = center
+                device.focusMode = .continuousAutoFocus
+            }
+            if device.isExposurePointOfInterestSupported, device.isExposureModeSupported(.continuousAutoExposure) {
+                device.exposurePointOfInterest = center
+                device.exposureMode = .continuousAutoExposure
+            }
+            device.isSubjectAreaChangeMonitoringEnabled = false
+            device.unlockForConfiguration()
+        } catch {
+            return
         }
     }
 
