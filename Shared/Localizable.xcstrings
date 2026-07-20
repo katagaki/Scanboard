@@ -157,7 +157,7 @@
         }
       }
     },
-    "Onboarding.AllowCameraAccess" : {
+    "Onboarding.GrantCameraAccess" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -365,7 +365,7 @@
         }
       }
     },
-    "Onboarding.GrantCameraAccess" : {
+    "Onboarding.AllowCameraAccess" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -376,7 +376,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "カメラアクセスを許可する"
+            "value" : "カメラアクセスを許可"
           }
         },
         "zh-Hans" : {
