@@ -162,49 +162,49 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Allow Camera Access"
+            "value" : "Continue"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "カメラへのアクセスを許可"
+            "value" : "続ける"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "允许访问相机"
+            "value" : "继续"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "允許取用相機"
+            "value" : "繼續"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permitir acceso a la cámara"
+            "value" : "Continuar"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "카메라 접근 허용"
+            "value" : "계속하다"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kamerazugriff erlauben"
+            "value" : "Fortsetzen"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autoriser l'accès à la caméra"
+            "value" : "Continuer"
           }
         }
       }
